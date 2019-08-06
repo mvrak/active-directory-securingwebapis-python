@@ -98,7 +98,7 @@ By default, navigating to root `/` will call for index.html, or display a direct
    var msalConfig = {
         auth: {
             clientId: '<application id>', //This is the Application (Client) ID you saved from above
-            authority: "https://login.microsoftonline.com/common" //If you selected All AAD orgs + Personal Accounts this is correct
+            authority: "https://login.microsoftonline.com/common"
         },
         cache: {
             cacheLocation: "localStorage",
