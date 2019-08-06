@@ -87,7 +87,7 @@ By default, navigating to root `/` will call for index.html, or display a direct
 #### Set up the local interface
 
 1.  Download the provided index.html
-1.  Add the CDN for MSAL JS within the html `<head>` element
+1.  Add the CDN for MSAL JS within the html `<head>`{.html} element
 ```html
 <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
 ```
@@ -220,7 +220,7 @@ payload = jwt.decode(
 ```
 
 1.  Return JWT details for clientside verification
-`return payload.current_user`
+`return payload.current_user`{.python}
 
 ### Step 6.  Configuring the Client UX to confirm the response
 
