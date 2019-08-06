@@ -77,7 +77,8 @@ import socketserver
 Handler = http.server.SimpleHTTPRequestHandler
 
 with socketserver.TCPServer(("", 30662), Handler) as httpd:
-    httpd.serve_forever()```
+    httpd.serve_forever()
+```
 	
 Note that the port is 30662.  You may modify this, but it must match the Redirect URI configured in the app registration.
 
@@ -135,7 +136,8 @@ app.config["DEBUG"] = True
 @app.route('/', methods=['GET'])
 def home():
     return "test"
-app.run()```
+app.run()
+```
 
 
 1.  Add an import for the crypto package `import jose`
@@ -143,14 +145,16 @@ app.run()```
 
 ```python
 API_AUDIENCE = "<api_audience>"
-TENANT_ID = "<tenant_id>" ```
+TENANT_ID = "<tenant_id>"
+```
 
 1.  Add a new route to process the API request:
 
 ```python
 @app.route('/api', methods=['GET'])
 def apiresponse():
-    return ""  #
+    return "" 
+```
 
 1. Retrieve public certs for your Tenant for Validation
 `jsonurl = urlopen("https://login.microsoftonline.com/" +
