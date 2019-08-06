@@ -31,14 +31,12 @@ To run this sample, you'll need:
 
 ### Step 1.  Register the client app 
 
-- Step 1: Register the sample with your Azure Active Directory tenant
-
 1. Go to https://portal.azure.com and log in.
 1. Click "Azure Active Directory" on the left side.
 1. Click "App Registrations" on the next blade.
 	- [Shortcut](https://go.microsoft.com/fwlink/?linkid=2083908)
 1. Select **New registration**.
-1. Select an name for your app.  Users will see this. 
+1. Select an name for your app.  
 1. For supported account types, select the third option, "All AAD + Personal Accounts".  
 	- Read through the "Help me choose" documentation for any questions.
 1. Set a redirect URI of http://localhost:30226 of type "Web"
@@ -72,7 +70,8 @@ To test locally and acquire the right tokens, you will need html/js UX, and a we
 
 1.  Download the provided demohost.py or copypaste the following code:
 
-```import http.server
+```python
+import http.server
 import socketserver
 
 Handler = http.server.SimpleHTTPRequestHandler
@@ -88,13 +87,14 @@ By default, navigating to root `/` will call for index.html, or display a direct
 
 1.  Download the provided index.html
 1.  Add the CDN for MSAL JS within the html `<head>` element
-```
+```html
 <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
 ```
 
 1.  Add the following code to configure the necessary parts of MSAL JS.  You can add this at the beginning of the `<script>` section within `<body>`.
 
-```    var msalConfig = {
+``` javascript
+   var msalConfig = {
         auth: {
             clientId: '<application id>', //This is the Application (Client) ID you saved from above
             authority: "https://login.microsoftonline.com/common" //If you selected All AAD orgs + Personal Accounts this is correct
@@ -127,7 +127,8 @@ Now we will build a minimal secure web API with Python
 	- Pip should be available in the scripts folder within your Python installation.
 1.  Start a new python file: `demoapi.py`
 1.  Configure the boilerplate Flask api structure:
-```import flask
+```python
+import flask
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -140,12 +141,13 @@ app.run()```
 1.  Add an import for the crypto package `import jose`
 1.  Set variables for API Audience and Tenant ID
 
-```API_AUDIENCE = "<api_audience>"
+```python
+API_AUDIENCE = "<api_audience>"
 TENANT_ID = "<tenant_id>" ```
 
 1.  Add a new route to process the API request:
 
-```
+```python
 @app.route('/api', methods=['GET'])
 def apiresponse():
     return ""  #
@@ -157,7 +159,8 @@ def apiresponse():
 1.  Get the Token from the http header:
 `token = get_token_auth_header()`
 
-```def get_token_auth_header():
+```python
+def get_token_auth_header():
 
     auth = request.headers.get("Authorization", None)
     if not auth:
@@ -185,7 +188,7 @@ def apiresponse():
     return token```
 
 1.  Find the matching cert
-```
+```python
 jwks = json.loads(jsonurl.read())
             unverified_header = jwt.get_unverified_header(token)
             rsa_key = {}
@@ -201,7 +204,7 @@ jwks = json.loads(jsonurl.read())
 ```
 
 1.  Decode the JWT
-```
+```python
 payload = jwt.decode(
                     token,
                     rsa_key,
