@@ -189,7 +189,8 @@ def get_token_auth_header():
                          " Bearer token"}, 401)
 
     token = parts[1]
-    return token```
+    return token
+```
 
 1.  Find the matching cert
 ```python
