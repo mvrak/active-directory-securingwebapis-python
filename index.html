@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quickstart</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+    <title>Web API and Services Quickstart</title>
     <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
+<style>.output{float:left}</style>
 </head>
-
 <body>
     <div class="container">
         <div class="leftContainer">
-            <p id="WelcomeMessage">Welcome to the Microsoft Authentication Library For Javascript Quickstart</p>
-            <button id="SignIn" onclick="signIn()">Sign In</button>
+            <h3 id="WelcomeMessage">Welcome to the Web API and Services Test UX based on MSAL JS</h3>
+            <br />
+			<p> Click this button to authenticate.  Your user token will be used to power the later tests. </p>
+			<button id="SignIn" onclick="signIn()">Sign In</button>
         </div>
-        <div class="rightContainer">
+		<br />
+		<p> Once you are authenticated, this button will become active and allow you to test your Web API </p>
+		<div>
+			<button disabled id="CallWebAPI" onclick="apicall()">Call Web API</button>
+		</div>
+		<br />
+		<p> After testing your secure web API, use this button to ask the Web API to call the upstream service. </p>
+		<div>
+			<button disabled id="CallUpstream" onclick="upstream()">Call Upstream</button>
+		</div>
+        <div class="output">
             <pre id="json"></pre>
+        </div>
+		<div class="output">
+            <pre id="apiresponse"></pre>
+        </div>
+		<div class="output">
+            <pre id="upstreamresponse"></pre>
         </div>
     </div>
 <script>
     var msalConfig = {
         auth: {
+			//clientId: '9204643c-e631-4cdc-bb2c-bbc883ef1a54',
             clientId: '65250674-7c32-4e98-a20d-86da2f73a22b', //This is your client ID
             authority: "https://login.microsoftonline.com/common" //This is your tenant info
         },
@@ -27,7 +45,7 @@
             storeAuthStateInCookie: true
         }
     };
-
+	var demoApiUrl = "http://localhost:5000/api/";
     var graphConfig = {
         graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
     };
@@ -44,6 +62,32 @@
     // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
     myMSALObj.handleRedirectCallback(authRedirectCallBack);
 
+	
+	function callDemoApi(url, accessToken, callback){
+		var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200)
+                callback(JSON.parse(this.responseText));
+        }
+        xmlHttp.open("GET", url, true); // true for asynchronous
+        xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+        xmlHttp.send();
+	}
+	
+	function apicall(){
+		myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse) {
+			callDemoApi(demoApiUrl, tokenResponse.accessToken, writeDemoResponse);
+	});}
+	
+	function writeDemoResponse(data){
+	    document.getElementById("apiresponse").innerHTML = "<br /><h4>Demo API Response</h4><br />"+JSON.stringify(data, null, 2);
+		document.getElementById("CallUpstream").disabled = false;
+	}
+	
+	function upstream(){
+		alert("tbd");
+	}
+	
     function signIn() {
         myMSALObj.loginPopup(requestObj).then(function (loginResponse) {
             //Successful login
@@ -90,12 +134,11 @@
     }
 
     function graphAPICallback(data) {
-        document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
-    }
+        document.getElementById("json").innerHTML = "<br /><h4>Your user profile from MS Graph</h4><br />"+JSON.stringify(data, null, 2);
+		document.getElementById("CallWebAPI").disabled = false;
+	}
 
     function showWelcomeMessage() {
-        var divWelcome = document.getElementById('WelcomeMessage');
-        divWelcome.innerHTML = "Welcome " + myMSALObj.getAccount().userName + " to Microsoft Graph API";
         var loginbutton = document.getElementById('SignIn');
         loginbutton.innerHTML = 'Sign Out';
         loginbutton.setAttribute('onclick', 'signOut();');
