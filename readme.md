@@ -14,7 +14,7 @@ endpoint: AAD v2.0
 
 ### Overview
 
-This sample demonstrates how to build a secure Python web API with a minimal python webapp + HTML/JS frontend and a minimal upstream service.  
+This sample demonstrates how to build a secure Python web API with a minimal python webapp + /JS frontend and a minimal upstream service.  
 
 1. The html/js frontend uses the MSAL.JS library (OAuth2 Implicit flow) to acquire a JWT access token.  
 2. The html/js frontend sends the token to the Python web API.  
@@ -77,7 +77,8 @@ import socketserver
 Handler = http.server.SimpleHTTPRequestHandler
 
 with socketserver.TCPServer(("", 30662), Handler) as httpd:
-    httpd.serve_forever()```
+    httpd.serve_forever()
+```
 	
 Note that the port is 30662.  You may modify this, but it must match the Redirect URI configured in the app registration.
 
@@ -97,7 +98,7 @@ By default, navigating to root `/` will call for index.html, or display a direct
    var msalConfig = {
         auth: {
             clientId: '<application id>', //This is the Application (Client) ID you saved from above
-            authority: "https://login.microsoftonline.com/common" //If you selected All AAD orgs + Personal Accounts this is correct
+            authority: "https://login.microsoftonline.com/common"
         },
         cache: {
             cacheLocation: "localStorage",
@@ -135,7 +136,8 @@ app.config["DEBUG"] = True
 @app.route('/', methods=['GET'])
 def home():
     return "test"
-app.run()```
+app.run()
+```
 
 
 1.  Add an import for the crypto package `import jose`
@@ -143,14 +145,16 @@ app.run()```
 
 ```python
 API_AUDIENCE = "<api_audience>"
-TENANT_ID = "<tenant_id>" ```
+TENANT_ID = "<tenant_id>"
+```
 
 1.  Add a new route to process the API request:
 
 ```python
 @app.route('/api', methods=['GET'])
 def apiresponse():
-    return ""  #
+    return "" 
+```
 
 1. Retrieve public certs for your Tenant for Validation
 `jsonurl = urlopen("https://login.microsoftonline.com/" +
@@ -185,7 +189,8 @@ def get_token_auth_header():
                          " Bearer token"}, 401)
 
     token = parts[1]
-    return token```
+    return token
+```
 
 1.  Find the matching cert
 ```python
