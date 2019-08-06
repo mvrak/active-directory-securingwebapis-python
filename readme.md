@@ -14,7 +14,7 @@ endpoint: AAD v2.0
 
 ### Overview
 
-This sample demonstrates how to build a secure Python web API with a minimal python webapp + HTML/JS frontend and a minimal upstream service.  
+This sample demonstrates how to build a secure Python web API with a minimal python webapp + /JS frontend and a minimal upstream service.  
 
 1. The html/js frontend uses the MSAL.JS library (OAuth2 Implicit flow) to acquire a JWT access token.  
 2. The html/js frontend sends the token to the Python web API.  
@@ -87,7 +87,7 @@ By default, navigating to root `/` will call for index.html, or display a direct
 #### Set up the local interface
 
 1.  Download the provided index.html
-1.  Add the CDN for MSAL JS within the html `<head>`{.html} element
+1.  Add the CDN for MSAL JS within the html `<head>` element
 ```html
 <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
 ```
@@ -220,7 +220,7 @@ payload = jwt.decode(
 ```
 
 1.  Return JWT details for clientside verification
-`return payload.current_user`{.python}
+`return payload.current_user`
 
 ### Step 6.  Configuring the Client UX to confirm the response
 
